@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sardorbek | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:oklch(0.16 0.035 275);--card:oklch(1 0 0 / 6%);--border:oklch(1 0 0 / 12%);
+--text:oklch(0.97 0.008 275);--muted:oklch(0.73 0.035 277);
+--v:oklch(0.68 0.24 300);--b:oklch(0.66 0.2 262);--c:oklch(0.82 0.15 196);
+--grad:linear-gradient(115deg,var(--v),var(--b) 55%,var(--c));}
+:root[data-theme="light"]{--bg:oklch(0.98 0.008 275);--card:oklch(1 0 0 / 65%);--border:oklch(0.2 0.04 277 / 12%);
+--text:oklch(0.2 0.04 277);--muted:oklch(0.48 0.04 277);
+--v:oklch(0.55 0.24 300);--b:oklch(0.55 0.2 262);--c:oklch(0.62 0.14 196);}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;overflow-x:hidden;transition:background .4s,color .4s;
+padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+h1,h2,h3,nav b{font-family:'Space Grotesk',system-ui,sans-serif;letter-spacing:-.02em;}
+.tag,.tl-item b,.typed,.stat span,time{font-family:'JetBrains Mono',ui-monospace,monospace;}
+@keyframes shimmer{0%{background-position:0% 50%;}100%{background-position:200% 50%;}}
+.title,.hero h1,nav b,.stat b{background:var(--grad);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 3s linear infinite;}
+canvas#bg{position:fixed;inset:0;z-index:0;opacity:.5;}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px;}
+section{padding:90px 0;}
+h2.title{font-size:clamp(26px,4vw,40px);margin-bottom:36px;text-align:center;}
+p.sub{text-align:center;color:var(--muted);margin-top:-24px;margin-bottom:36px;}
+nav{position:sticky;top:0;z-index:5;backdrop-filter:blur(10px);background:color-mix(in oklab,var(--bg) 75%,transparent);
+border-bottom:1px solid var(--border);padding:14px 0;}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+nav .links{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;}
+nav a{color:var(--muted);text-decoration:none;}
+nav a:hover{color:var(--c);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.langsw{display:flex;border:1px solid var(--border);border-radius:20px;overflow:hidden;}
+.langsw button{background:none;border:none;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;padding:5px 10px;cursor:pointer;}
+.langsw button.active{background:var(--v);color:#fff;}
+.themebtn{border:1px solid var(--border);background:var(--card);border-radius:50%;width:32px;height:32px;cursor:pointer;color:var(--text);font-size:15px;}
+.hero{min-height:88vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;}
+.badge{border:1px solid var(--border);border-radius:30px;padding:6px 16px;font-size:13px;color:var(--muted);background:var(--card);}
+.hero h1{font-size:clamp(38px,7vw,70px);margin-top:20px;}
+.typed{font-size:clamp(16px,2.2vw,20px);color:var(--muted);margin-top:14px;min-height:28px;}
+.cursor{border-right:2px solid var(--c);animation:blink .8s infinite;}
+@keyframes blink{50%{border-color:transparent;}}
+.stats{display:flex;gap:40px;margin-top:44px;flex-wrap:wrap;justify-content:center;}
+.stat b{font-size:clamp(26px,4vw,36px);display:block;}
+.stat span{color:var(--c);font-size:12px;text-shadow:0 0 8px color-mix(in oklab,var(--c) 60%,transparent);
+animation:statglow 2.4s ease-in-out infinite;}
+@keyframes statglow{0%,100%{opacity:.65;}50%{opacity:1;text-shadow:0 0 14px color-mix(in oklab,var(--c) 80%,transparent);}}
+.reveal{opacity:0;transform:translateY(36px);transition:all .7s cubic-bezier(.2,.7,.3,1);}
+.reveal.show{opacity:1;transform:translateY(0);}
+#projects{position:relative;overflow:hidden;}
+.rocket{position:fixed;font-size:26px;left:10%;top:50%;z-index:50;pointer-events:none;
+transform:translate(-50%,-50%) rotate(-45deg);will-change:left,top;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;position:relative;z-index:1;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;backdrop-filter:blur(10px);
+transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s ease,border-color .35s ease;}
+.card:hover{transform:translateY(-6px) scale(1.02);border-color:var(--v);
+box-shadow:0 0 0 1px color-mix(in oklab,var(--v) 35%,transparent),0 18px 60px -20px color-mix(in oklab,var(--v) 55%,transparent);}
+.card .emoji{font-size:30px;}
+.card h3{margin:10px 0 6px;font-size:17px;}
+.card p{color:var(--muted);font-size:13px;margin-bottom:10px;}
+.tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid var(--border);color:var(--c);}
+.tl{position:relative;padding-left:28px;border-left:2px solid var(--border);max-width:700px;margin:0 auto;}
+.tl-item{margin-bottom:30px;position:relative;}
+.tl-item::before{content:'';position:absolute;left:-36px;top:2px;width:13px;height:13px;border-radius:50%;background:var(--grad);}
+.tl-item b{color:var(--c);font-size:13px;}
+.tl-item h3{margin:4px 0;font-size:16px;}
+.tl-item p{color:var(--muted);font-size:14px;}
+.skill{margin-bottom:16px;}
+.skill .row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;}
+.bar{height:8px;border-radius:6px;background:var(--border);overflow:hidden;}
+.bar i{display:block;height:100%;width:0;border-radius:6px;background:var(--grad);transition:width 1.3s ease;}
+.skillgrid{display:grid;gap:14px;max-width:700px;margin:0 auto;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+.about-grid{display:grid;gap:20px;grid-template-columns:3fr 2fr;}
+@media(max-width:700px){.about-grid{grid-template-columns:1fr;}}
+.about-grid .card p{color:var(--text);font-size:15px;line-height:1.6;}
+.about-grid ul{list-style:none;margin-top:10px;}
+.about-grid li{color:var(--muted);font-size:13px;margin-bottom:8px;padding-left:16px;position:relative;}
+.about-grid li::before{content:'▹';position:absolute;left:0;color:var(--c);}
+.postgrid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
+.post time{color:var(--c);font-size:12px;}
+.post h3{margin:8px 0 6px;font-size:15px;}
+.post p{color:var(--muted);font-size:13px;}
+.future{position:relative;}
+.future .badge2{position:absolute;top:14px;right:14px;font-size:11px;border:1px solid var(--c);color:var(--c);border-radius:20px;padding:2px 8px;}
+#contact{position:relative;text-align:center;overflow:hidden;}
+svg.net{position:absolute;inset:0;width:100%;height:100%;opacity:.3;z-index:0;}
+.net circle{animation:pulse 3s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.3;}50%{opacity:1;}}
+.cbtns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:24px;position:relative;z-index:1;}
+.cbtn{padding:11px 24px;border-radius:30px;border:1px solid var(--border);color:var(--text);text-decoration:none;background:var(--card);transition:.3s;}
+.cbtn:hover{box-shadow:0 0 22px color-mix(in oklab,var(--v) 50%,transparent);border-color:var(--v);}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:26px 0;position:relative;z-index:1;}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<nav><div class="wrap">
+  <b>&lt;Sardorbek /&gt;</b>
+  <div class="links" id="navlinks"></div>
+  <div class="nav-right">
+    <div class="langsw" id="langsw">
+      <button data-l="uz">UZ</button><button data-l="ru">RU</button><button data-l="en">EN</button>
+    </div>
+    <button class="themebtn" id="themebtn">🌙</button>
+  </div>
+</div></nav>
+
+<section class="hero"><div class="wrap">
+  <span class="badge" id="badge"></span>
+  <h1>Sardorbek</h1>
+  <div class="typed"><span id="tw"></span><span class="cursor"></span></div>
+  <p id="herorole" style="color:var(--muted);margin-top:10px;"></p>
+  <div class="stats">
+    <div class="stat"><b data-t="100">0</b><span id="s1"></span></div>
+    <div class="stat"><b data-t="14">0</b><span id="s2"></span></div>
+    <div class="stat"><b data-t="5">0</b><span id="s3"></span></div>
+    <div class="stat"><b data-t="800">0</b><span id="s4"></span></div>
+  </div>
+  <div style="margin-top:36px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+    <a href="#projects" class="cbtn" style="background:var(--v);color:#fff;border:none;" id="ctaProjects"></a>
+    <a href="#contact" class="cbtn" id="ctaContact"></a>
+  </div>
+</div></section>
+
+<section id="projects">
+  <div class="rocket">🚀</div>
+  <div class="wrap"><h2 class="title reveal" id="projTitle"></h2><p class="sub reveal" id="projSub"></p>
+  <div class="grid" id="grid"></div></div>
+</section>
+
+<section id="roadmap"><div class="wrap"><h2 class="title reveal" id="rmTitle"></h2><p class="sub reveal" id="rmSub"></p>
+  <div class="tl" id="tl"></div></div></section>
+
+<section id="skills"><div class="wrap"><h2 class="title reveal" id="skTitle"></h2><p class="sub reveal" id="skSub"></p>
+  <div class="skillgrid" id="skillgrid"></div></div></section>
+
+<section id="about"><div class="wrap"><h2 class="title reveal" id="abTitle"></h2>
+  <div class="about-grid">
+    <div class="card reveal"><p id="abText"></p></div>
+    <div class="card reveal"><h3 style="font-size:15px;" id="certTitle"></h3><ul id="certs"></ul>
+      <a href="https://t.me/webcore_dev" target="_blank" style="margin-top:16px;display:inline-flex;align-items:center;gap:6px;color:var(--c);font-size:13px;font-weight:600;text-decoration:none;">
+        📡 <span id="channelTxt"></span>
+      </a>
+    </div>
+  </div></div></section>
+
+<section id="blog"><div class="wrap"><h2 class="title reveal" id="blogTitle"></h2><p class="sub reveal" id="blogSub"></p>
+  <div class="postgrid" id="posts"></div></div></section>
+
+<section id="future"><div class="wrap"><h2 class="title reveal" id="futTitle"></h2><p class="sub reveal" id="futSub"></p>
+  <div class="grid" id="futuregrid"></div></div></section>
+
+<section id="contact">
+  <svg class="net" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+    <line x1="50" y1="50" x2="300" y2="150" stroke="#7c5cff"/><line x1="300" y1="150" x2="600" y2="80" stroke="#3ea6ff"/>
+    <line x1="300" y1="150" x2="450" y2="320" stroke="#00e5c7"/><line x1="600" y1="80" x2="750" y2="250" stroke="#7c5cff"/>
+    <circle cx="50" cy="50" r="5" fill="#7c5cff"/><circle cx="300" cy="150" r="6" fill="#3ea6ff"/>
+    <circle cx="600" cy="80" r="5" fill="#00e5c7"/><circle cx="450" cy="320" r="5" fill="#7c5cff"/>
+  </svg>
+  <div class="wrap"><h2 class="title reveal" id="ctTitle"></h2><p class="reveal" id="ctSub" style="color:var(--muted);max-width:480px;margin:0 auto;"></p>
+    <div class="cbtns reveal">
+      <a class="cbtn" href="mailto:qurbondurdiyevs45@gmail.com">Email</a>
+      <a class="cbtn" href="https://t.me/Qurbondurdiyevv_777" target="_blank">Telegram</a>
+      <a class="cbtn" href="https://github.com/qurbondurdiyevs45-blip" target="_blank">GitHub</a>
+      <a class="cbtn" href="tel:+998200095682">📞 +998 20 009 56 82</a>
+    </div>
+  </div>
+</section>
+<footer id="footer"></footer>
+
+<script>
+const L=(o)=>o; // helper, no-op
+const ui={
+ navProjects:{uz:"Loyihalar",ru:"Проекты",en:"Projects"},navRoadmap:{uz:"Yo'l xaritam",ru:"Мой путь",en:"Roadmap"},
+ navSkills:{uz:"Ko'nikmalar",ru:"Навыки",en:"Skills"},navAbout:{uz:"Men haqimda",ru:"Обо мне",en:"About"},
+ navBlog:{uz:"Fikrlarim",ru:"Мысли",en:"Thoughts"},navContact:{uz:"Hamkorlik",ru:"Контакты",en:"Contact"},
+ heroBadge:{uz:"8-sinf o'quvchisi · AI & Web dasturchi",ru:"Ученик 8 класса · AI & Web разработчик",en:"8th grader · AI & Web developer"},
+ heroRole:{uz:"AI-powered veb-ilovalar va Telegram botlar yarataman",ru:"Создаю AI-веб-приложения и Telegram-ботов",en:"I build AI-powered web apps and Telegram bots"},
+ ctaProjects:{uz:"Loyihalarimni ko'rish →",ru:"Смотреть проекты →",en:"View my work →"},
+ ctaContact:{uz:"Bog'lanish",ru:"Связаться",en:"Get in touch"},
+ s1:{uz:"+ ta loyiha",ru:"+ проектов",en:"+ projects"},s2:{uz:"ta texnologiya",ru:"технологий",en:"technologies"},
+ s3:{uz:"ta Telegram bot",ru:"Telegram-ботов",en:"Telegram bots"},s4:{uz:"+ soat kod yozish",ru:"+ часов кодинга",en:"+ hours of coding"},
+ projTitle:{uz:"Loyihalarim",ru:"Мои проекты",en:"My projects"},projSub:{uz:"AI, veb va bot loyihalarim to'plami",ru:"Подборка моих AI-, веб- и бот-проектов",en:"A selection of my AI, web and bot projects"},
+ rmTitle:{uz:"Yo'l xaritam",ru:"Мой путь",en:"My roadmap"},rmSub:{uz:"Dasturlash safarimning asosiy bosqichlari",ru:"Главные этапы моего пути",en:"Key milestones of my coding journey"},
+ skTitle:{uz:"Ko'nikmalarim",ru:"Мои навыки",en:"My skills"},skSub:{uz:"Har kuni o'rganib boraman",ru:"Учусь каждый день",en:"Learning every single day"},
+ abTitle:{uz:"Men haqimda",ru:"Обо мне",en:"About me"},
+ abText:{uz:"Men Sardorbek, 8-sinf o'quvchisiman. Dasturlash men uchun shunchaki mashg'ulot emas — bu fikrlarimni ishlaydigan mahsulotga aylantirish usuli. AI-powered veb-ilovalar va Telegram botlar yarataman, har bir loyihada yangi texnologiyani sinab ko'raman. Maqsadim — Computer Engineering / Software Engineering yo'nalishida kuchli universitetda o'qish.",
+   ru:"Я Сардорбек, ученик 8 класса. Программирование для меня — способ превращать идеи в работающие продукты. Я создаю AI-веб-приложения и Telegram-ботов, пробуя новую технологию в каждом проекте. Моя цель — поступить на Computer Engineering / Software Engineering.",
+   en:"I'm Sardorbek, an 8th grade student. Coding is how I turn ideas into working products. I build AI-powered web apps and Telegram bots, trying a new technology in every project. My goal is to study Computer Engineering / Software Engineering."},
+ certTitle:{uz:"Sertifikatlar va kurslar",ru:"Сертификаты и курсы",en:"Certificates & courses"},
+ channelTxt:{uz:"WebCore Dev — Telegram kanalim (loyihalar va yangiliklar)",ru:"WebCore Dev — мой Telegram-канал (проекты и новости)",en:"WebCore Dev — my Telegram channel (projects & updates)"},
+ blogTitle:{uz:"Mening fikrlarim",ru:"Мои мысли",en:"My thoughts"},blogSub:{uz:"Kod, AI va o'qish haqida qisqa yozuvlar",ru:"Короткие заметки о коде, AI и учёбе",en:"Short notes on code, AI and learning"},
+ futTitle:{uz:"Kelajak rejalarim",ru:"Планы на будущее",en:"What's next"},futSub:{uz:"Hozir ishlab chiqayotgan g'oyalarim",ru:"Идеи, над которыми я работаю",en:"Ideas I'm currently building"},
+ soon:{uz:"Tez orada",ru:"Скоро",en:"Soon"},
+ ctTitle:{uz:"Keling, birga loyiha qilaylik!",ru:"Давайте сделаем проект вместе!",en:"Let's build something together!"},
+ ctSub:{uz:"G'oyangiz bormi yoki shunchaki salomlashmoqchimisiz? Yozing.",ru:"Есть идея или просто хотите поздороваться?",en:"Got an idea, or just want to say hi?"},
+ footer:{uz:"Sardorbek tomonidan kod va qahva bilan yaratildi",ru:"Сделано Сардорбеком с кодом и кофе",en:"Built by Sardorbek with code and coffee"},
+};
+const projects=[
+{e:"🌍",t:{uz:"Real AI — Tarjimon",ru:"Real AI — Переводчик",en:"Real AI — Translator"},
+ d:{uz:"Aqlli tarjimon veb-ilova: ovozli funksiya, rasm skaneri (OCR) va 5 ta premium mavzu bilan.",
+   ru:"Умный переводчик: голосовая функция, сканер изображений (OCR) и 5 премиум-тем.",
+   en:"Smart translator web app with voice, OCR image scanner and 5 premium themes."},
+ tags:["AI","Ovoz","OCR"],link:"https://lumen-lingo-ai.lovable.app"},
+{e:"🤖",t:{uz:"Git-Autopilot",ru:"Git-Autopilot",en:"Git-Autopilot"},
+ d:{uz:"GitHub profilini 24/7 AI kod bazasi bilan to'ldiruvchi avtopilot. Cyberpunk UI, SafeGuard, Multi-Account.",
+   ru:"Автопилот, наполняющий GitHub профиль AI-кодом 24/7.",
+   en:"An autopilot filling your GitHub profile with AI-generated code 24/7."},
+ tags:["GitHub","AI","Automation"],link:"https://git-autopilot.lovable.app"},
+{e:"💬",t:{uz:"@madridist_dev_bot",ru:"@madridist_dev_bot",en:"@madridist_dev_bot"},
+ d:{uz:"24/7 ishlaydigan AI-yordamchi Telegram bot — istalgan mavzuda, dasturlash bo'yicha ham javob beradi.",
+   ru:"AI-ассистент в Telegram, работающий 24/7 на любые темы.",
+   en:"A 24/7 AI assistant Telegram bot answering on any topic, coding included."},
+ tags:["Telegram Bot","AI","24/7"],link:"https://t.me/madridist_dev_bot"},
+{e:"🏛️",t:{uz:"Smart-Sayohat",ru:"Smart-Sayohat",en:"Smart-Sayohat"},
+ d:{uz:"200+ tarixiy shaxs bilan AI orqali jonli suhbat: Amir Temur, Mirzo Ulug'bek, Bobur va boshqalar.",
+   ru:"Живой AI-диалог с 200+ историческими личностями.",
+   en:"Live AI conversations with 200+ historical figures."},
+ tags:["React","Tailwind","AI"],link:"https://ancients-speak.lovable.app"},
+{e:"💼",t:{uz:"BiznesStart",ru:"BiznesStart",en:"BiznesStart"},
+ d:{uz:"Startap g'oyasini biznesga aylantiruvchi AI platforma: MVP, biznes-reja, bozor tahlili, investor pitch.",
+   ru:"AI-платформа для превращения идеи в бизнес: MVP, бизнес-план, анализ рынка.",
+   en:"An AI platform turning an idea into a business: MVP, business plan, market analysis."},
+ tags:["AI","Startup","Business"],link:"https://biznesstart.lovable.app"},
+{e:"✨",t:{uz:"Spirit Helper",ru:"Spirit Helper",en:"Spirit Helper"},
+ d:{uz:"Foydalanuvchilarga motivatsiya beruvchi, interaktiv interfeysga ega raqamli yordamchi platforma.",
+   ru:"Цифровой помощник с интерактивным интерфейсом, дающий мотивацию.",
+   en:"A motivational digital assistant platform with an interactive interface."},
+ tags:["AI","Motivatsiya","UI"],link:"https://spirit-helper-one.lovable.app"}];
+const tl=[
+{y:"2023",t:{uz:"Birinchi qadam",ru:"Первый шаг",en:"First step"},d:{uz:"Scratch va HTML/CSS bilan tanishdim, birinchi sahifamni yasadim.",ru:"Познакомился со Scratch и HTML/CSS.",en:"Discovered Scratch and HTML/CSS."}},
+{y:"2024",t:{uz:"Python va botlar",ru:"Python и боты",en:"Python and bots"},d:{uz:"Python o'rgandim, birinchi Telegram botimni ishga tushirdim.",ru:"Выучил Python и запустил бота.",en:"Learned Python and launched my first bot."}},
+{y:"2025",t:{uz:"React va TypeScript",ru:"React и TypeScript",en:"React and TypeScript"},d:{uz:"Zamonaviy frontendga o'tdim, komponentlar bilan ishlashni o'rgandim.",ru:"Перешёл к современному фронтенду.",en:"Moved to modern component-driven UI."}},
+{y:"2026",t:{uz:"AI-powered mahsulotlar",ru:"AI-продукты",en:"AI-powered products"},d:{uz:"AI API'lar bilan real foydalanuvchilarga mo'ljallangan ilovalar qurmoqdaman.",ru:"Создаю приложения с AI API.",en:"Building apps with AI APIs for real users."}}];
+const skills=[["React",85],["TypeScript",78],["Python",82],["Tailwind CSS",88],["Telegram Bot API",80],["Git & GitHub",75],["AI / LLM API",72],["SQL / PostgreSQL",60]];
+const certs=[{uz:"IT Park — Frontend asoslari",ru:"IT Park — основы Frontend",en:"IT Park — Frontend basics"},
+{uz:"Ingliz tili kursi — A2 daraja",ru:"Курс английского — A2",en:"English course — A2 level"},
+{uz:"Python bootcamp (online)",ru:"Python bootcamp (онлайн)",en:"Python bootcamp (online)"},
+{uz:"Maktab informatika olimpiadasi — ishtirokchi",ru:"Школьная олимпиада по информатике",en:"School informatics olympiad"}];
+const posts=[{date:"2026-09-10",t:{uz:"Nega TypeScript'ni yaxshi ko'raman",ru:"Почему я люблю TypeScript",en:"Why I love TypeScript"},x:{uz:"Xatolarni ishga tushirishdan oldin topish — vaqtni tejashning eng oson yo'li.",ru:"Находить ошибки до запуска экономит время.",en:"Catching bugs before runtime saves time."}},
+{date:"2026-08-02",t:{uz:"Birinchi botim qanday ishlamadi",ru:"Как мой первый бот не работал",en:"How my first bot failed"},x:{uz:"Bir vergul tufayli 3 kun sarflagan hikoyam.",ru:"Одна запятая отняла три дня.",en:"One comma cost me three days."}},
+{date:"2026-06-21",t:{uz:"Maktab bilan kodni qanday birlashtiraman",ru:"Как совмещаю школу и код",en:"Balancing school and code"},x:{uz:"Kunlik reja, kichik maqsadlar va har kuni kamida 30 daqiqa kod.",ru:"План на день и минимум 30 минут кода.",en:"A daily plan and at least 30 minutes of code."}}];
+const future=[{e:"🧠",t:{uz:"AI Study Planner",ru:"AI Study Planner",en:"AI Study Planner"},d:{uz:"O'quvchi uchun shaxsiy o'quv rejasini AI tuzib beradigan ilova.",ru:"AI составляет учебный план.",en:"An app where AI builds a study plan."}},
+{e:"🛰️",t:{uz:"Olimpiada platformasi",ru:"Платформа олимпиад",en:"Olympiad platform"},d:{uz:"Informatika olimpiadasiga tayyorlanish uchun masalalar bazasi.",ru:"База задач для олимпиад.",en:"A problem bank for olympiad prep."}},
+{e:"🎧",t:{uz:"Voice notes bot",ru:"Бот голосовых заметок",en:"Voice notes bot"},d:{uz:"Ovozli xabarni matnga va qisqa xulosaga aylantiruvchi bot.",ru:"Голос в текст и краткое резюме.",en:"Voice messages into text and summaries."}}];
+
+let lang='uz';
+function tr(o){return o[lang]||o.uz;}
+function render(){
+  document.documentElement.lang=lang;
+  document.getElementById('navlinks').innerHTML=['navProjects#projects','navRoadmap#roadmap','navSkills#skills','navAbout#about','navBlog#blog','navContact#contact']
+    .map(p=>{const[k,h]=p.split('#');return `<a href="#${h}">${tr(ui[k])}</a>`;}).join('');
+  document.getElementById('badge').textContent=tr(ui.heroBadge);
+  document.getElementById('herorole').textContent=tr(ui.heroRole);
+  document.getElementById('ctaProjects').textContent=tr(ui.ctaProjects);
+  document.getElementById('ctaContact').textContent=tr(ui.ctaContact);
+  document.getElementById('s1').textContent=tr(ui.s1);document.getElementById('s2').textContent=tr(ui.s2);
+  document.getElementById('s3').textContent=tr(ui.s3);document.getElementById('s4').textContent=tr(ui.s4);
+  document.getElementById('projTitle').textContent=tr(ui.projTitle);document.getElementById('projSub').textContent=tr(ui.projSub);
+  document.getElementById('rmTitle').textContent=tr(ui.rmTitle);document.getElementById('rmSub').textContent=tr(ui.rmSub);
+  document.getElementById('skTitle').textContent=tr(ui.skTitle);document.getElementById('skSub').textContent=tr(ui.skSub);
+  document.getElementById('abTitle').textContent=tr(ui.abTitle);document.getElementById('abText').textContent=tr(ui.abText);
+  document.getElementById('certTitle').textContent=tr(ui.certTitle);
+  document.getElementById('channelTxt').textContent=tr(ui.channelTxt);
+  document.getElementById('blogTitle').textContent=tr(ui.blogTitle);document.getElementById('blogSub').textContent=tr(ui.blogSub);
+  document.getElementById('futTitle').textContent=tr(ui.futTitle);document.getElementById('futSub').textContent=tr(ui.futSub);
+  document.getElementById('ctTitle').textContent=tr(ui.ctTitle);document.getElementById('ctSub').textContent=tr(ui.ctSub);
+  document.getElementById('footer').textContent="© 2026 "+tr(ui.footer);
+  document.getElementById('grid').innerHTML=projects.map(p=>`<a href="${p.link}" target="_blank" rel="noreferrer" class="card reveal show" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;"><div class="emoji">${p.e}</div><h3>${tr(p.t)}</h3><p style="flex:1;">${tr(p.d)}</p><div class="tags">${p.tags.map(x=>`<span class="tag">${x}</span>`).join('')}</div><span style="margin-top:12px;color:var(--c);font-size:13px;font-weight:600;">Ko'rish →</span></a>`).join('');
+  document.getElementById('tl').innerHTML=tl.map(i=>`<div class="tl-item reveal show"><b>${i.y}</b><h3>${tr(i.t)}</h3><p>${tr(i.d)}</p></div>`).join('');
+  document.getElementById('skillgrid').innerHTML=skills.map(([n,l])=>`<div class="skill reveal show card"><div class="row"><span>${n}</span><span style="font-family:'JetBrains Mono',monospace;color:var(--muted)">${l}%</span></div><div class="bar"><i data-w="${l}" style="width:${l}%"></i></div></div>`).join('');
+  document.getElementById('certs').innerHTML=certs.map(c=>`<li>${tr(c)}</li>`).join('');
+  document.getElementById('posts').innerHTML=posts.map(p=>`<div class="post card reveal show"><time>${p.date}</time><h3>${tr(p.t)}</h3><p>${tr(p.x)}</p></div>`).join('');
+  document.getElementById('futuregrid').innerHTML=future.map(f=>`<div class="card future reveal show"><span class="badge2">${tr(ui.soon)}</span><div style="font-size:28px">${f.e}</div><h3>${tr(f.t)}</h3><p style="color:var(--muted);font-size:13px;margin-top:6px;">${tr(f.d)}</p></div>`).join('');
+  document.querySelectorAll('#langsw button').forEach(b=>b.classList.toggle('active',b.dataset.l===lang));
+}
+document.getElementById('langsw').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return; lang=b.dataset.l; render();
+});
+const themebtn=document.getElementById('themebtn');
+try{ if(localStorage.getItem('theme')==='light'){document.documentElement.dataset.theme='light';themebtn.textContent='☀️';} }catch(e){}
+themebtn.addEventListener('click',()=>{
+  const light=document.documentElement.dataset.theme==='light';
+  document.documentElement.dataset.theme=light?'':'light';
+  themebtn.textContent=light?'🌙':'☀️';
+  try{localStorage.setItem('theme',light?'dark':'light');}catch(e){}
+});
+render();
+
+const phrases={uz:["Salom, men Sardorbekman...","AI va veb-ilovalar yarataman","Telegram botlar yozaman","Maqsadim — Software Engineering"],
+ru:["Привет, я Сардорбек...","Создаю AI и веб-приложения","Пишу Telegram-ботов","Цель — Software Engineering"],
+en:["Hi, I'm Sardorbek...","I build AI and web apps","I write Telegram bots","Goal — Software Engineering"]};
+const twEl=document.getElementById('tw');let pi=0,ci=0,del=false;
+function type(){const arr=phrases[lang]||phrases.uz;const cur=arr[pi%arr.length];
+twEl.textContent=del?cur.substring(0,ci--):cur.substring(0,ci++);
+let s=del?35:70;if(!del&&ci>cur.length){s=1500;del=true;}else if(del&&ci<0){del=false;pi++;ci=0;s=300;}
+setTimeout(type,s);} type();
+
+const obs=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('show'),i*60);obs.unobserve(e.target);}}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(x=>obs.observe(x));
+document.querySelectorAll('.stat b').forEach(b=>{const t=+b.dataset.t;let c=0;const iv=setInterval(()=>{c+=Math.ceil(t/40);if(c>=t){c=t;clearInterval(iv);}b.textContent=c;},30);});
+
+const canvas=document.getElementById('bg'),ctx=canvas.getContext('2d');
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;} resize();addEventListener('resize',resize);
+const stars=Array.from({length:120},()=>({x:Math.random()*2000,y:Math.random()*2000,r:Math.random()*1.4+.3,tw:Math.random()*Math.PI*2}));
+const planets=[
+ {x:.12,y:.18,r:30,c1:'#ffd27a',c2:'#ff6a3d',speed:.02,name:'Quyosh'},
+ {x:.88,y:.12,r:18,c1:'#e4e9ff',c2:'#8f9bc9',speed:.015,name:'Oy'},
+ {x:.76,y:.68,r:17,c1:'#a78bff',c2:'#4b2fb8',speed:.03,name:'Neptun',ring:true},
+ {x:.18,y:.78,r:12,c1:'#e26b4a',c2:'#7a2a13',speed:.04,name:'Mars'},
+ {x:.5,y:.15,r:14,c1:'#7fd8ff',c2:'#1c5c8a',speed:.025,name:'Uran',ring:true},
+ {x:.35,y:.55,r:10,c1:'#ffe08a',c2:'#a8760c',speed:.035,name:'Yupiter'}];
+let ufos=Array.from({length:3},(_,i)=>({y:Math.random()*.8+.1,x:-.2-i*.4,speed:.006+Math.random()*.005}));
+let t=0,scrollY=0;
+addEventListener('scroll',()=>{scrollY=window.scrollY;},{passive:true});
+function draw(){
+ t+=0.006;
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ ctx.save();
+ const py=(scrollY*0.05)%2000;
+ stars.forEach(s=>{
+   const sy=(s.y-py+2000)%2000;
+   const alpha=.5+.5*Math.sin(t*2+s.tw);
+   ctx.beginPath();ctx.arc((s.x/2000)*canvas.width,(sy/2000)*canvas.height,s.r,0,7);
+   ctx.fillStyle=`rgba(255,255,255,${alpha*.8})`;ctx.fill();
+ });
+ planets.forEach((p,i)=>{
+   const px=((p.x*canvas.width)+Math.sin(t*p.speed*20+i)*40);
+   const pyy=((p.y*canvas.height)+Math.cos(t*p.speed*14+i)*30)-(scrollY*0.08*(i+1)*0.3);
+   if(p.ring){
+     ctx.save();ctx.translate(px,pyy);ctx.rotate(-.3+t*0.15);
+     ctx.beginPath();ctx.ellipse(0,0,p.r*1.9,p.r*0.55,0,0,7);
+     ctx.strokeStyle='rgba(200,190,255,.55)';ctx.lineWidth=3;ctx.stroke();ctx.restore();
+   }
+   const grad=ctx.createRadialGradient(px-p.r*0.3,pyy-p.r*0.3,p.r*0.2,px,pyy,p.r);
+   grad.addColorStop(0,p.c1);grad.addColorStop(1,p.c2);
+   ctx.beginPath();ctx.arc(px,pyy,p.r,0,7);ctx.fillStyle=grad;ctx.shadowColor=p.c1;ctx.shadowBlur=24;ctx.fill();ctx.shadowBlur=0;
+   ctx.font='11px "JetBrains Mono", monospace';ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.85)';
+   ctx.fillText(p.name,px,pyy+p.r+16);
+ });
+ // ozga sayyoraliklar (UFO) — tez uchib o'tadi
+ ufos.forEach(u=>{
+   u.x+=u.speed;
+   if(u.x>1.2) u.x=-.2;
+   const ux=u.x*canvas.width, uy=u.y*canvas.height+Math.sin(t*3+u.x*10)*8;
+   ctx.save();ctx.translate(ux,uy);
+   ctx.beginPath();ctx.ellipse(0,0,16,6,0,0,7);ctx.fillStyle='rgba(180,255,220,.85)';ctx.shadowColor='#00e5c7';ctx.shadowBlur=14;ctx.fill();
+   ctx.beginPath();ctx.arc(0,-4,7,Math.PI,0);ctx.fillStyle='rgba(120,255,240,.5)';ctx.fill();
+   ctx.shadowBlur=0;ctx.restore();
+ });
+ ctx.restore();
+ requestAnimationFrame(draw);
+}
+draw();
+document.querySelectorAll('.rocket').forEach((r,i)=>{ r._tx=0;r._ty=0; });
+(function(){
+  const rockets=[...document.querySelectorAll('.rocket')];
+  let target={x:innerWidth*0.1,y:innerHeight*0.5};
+  document.addEventListener('mousemove',e=>{ target.x=e.clientX; target.y=e.clientY; });
+  function loop(){
+    rockets.forEach((r,i)=>{
+      const speed=0.14;
+      r._tx=r._tx??target.x; r._ty=r._ty??target.y;
+      r._tx += (target.x - r._tx)*speed;
+      r._ty += (target.y - r._ty)*speed;
+      const dx=target.x-r._tx, dy=target.y-r._ty;
+      const angle=Math.atan2(dy,dx)*180/Math.PI;
+      r.style.left=r._tx+'px'; r.style.top=r._ty+'px';
+      r.style.transform=`translate(-50%,-50%) rotate(${angle+45}deg)`;
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+</script>
+</body>
+</html>
